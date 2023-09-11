@@ -5,6 +5,27 @@
 #include "PinConfig.h"
 #include "display.h"
 
+const unsigned long EXECUTION_INTERVAL = 20; // 50 Гц (1 секунда / 50 = 20 миллисекунд)
+const unsigned long MAX_EXECUTION_TIME = 100; // Максимальное время выполнения 100 миллисекунд
+
+TaskScheduler ts;
+
+void driveDisplayTask() {
+  unsigned long startTime = millis(); // Запомнить время начала выполнения функции
+  driveDisplay();
+  unsigned long endTime = millis(); // Запомнить время окончания выполнения функции
+  unsigned long executionTime = endTime - startTime; // Рассчитать время выполнения
+
+  if (executionTime > MAX_EXECUTION_TIME) {
+    // Если время выполнения превышает максимальное, выполнить необходимые действия
+    // например, выйти из функции или выполнить дополнительные действия
+  }
+}
+
+void sendCanMessagesTask() {
+  sendBufferedCanMessages();
+}
+
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 
@@ -94,7 +115,10 @@ SPI.begin();
   }  
 
  initialise_display();     
+ts.addTask(driveDisplayTask, EXECUTION_INTERVAL);
+  ts.addTask(sendCanMessagesTask, EXECUTION_INTERVAL);
 
+  ts.enableAll();
 }
 
 void loop() {
@@ -128,13 +152,7 @@ canMsg1.can_dlc = 8;
     canMsg2.data[7] = adc7 & 0xFF;
 
     addToCanBuffer(canMsg2);   
-    sendBufferedCanMessages();
 
-}
-
-void driveDisplayTask() {
-        
-        driveDisplay();
 }
 
 void ReadAnalogStatuses() {
@@ -153,5 +171,5 @@ initializeADCs(); // Здесь вызываем функцию инициали
   digitalWrite(EGT6_LED, egt6 > 800 ? HIGH : LOW);
 }
 
-Task t1(500, TASK_FOREVER, &driveDisplayTask, &ts, true);
-Task t2(500, TASK_FOREVER, &ReadAnalogStatuses, &ts, true);
+//Task t1(500, TASK_FOREVER, &driveDisplayTask, &ts, true);
+Task t1(500, TASK_FOREVER, &ReadAnalogStatuses, &ts, true);
