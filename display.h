@@ -62,10 +62,6 @@
 #define GRAY             0X8430 //ЧТО ТО ТИПО АСФАЛЬТ 
 #define MAGENTA          0xF81F //ЗЕЛЕНЫЙ
 
-#define CAN_BUFFER_SIZE 4
-
-MCP_CAN CAN(53);  // Создаем объект CAN и задаем CS пин как 53
-
 extern Adafruit_ST7735 tft;
 void driveDisplay();
 void initialise_display();
