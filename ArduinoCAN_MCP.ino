@@ -44,14 +44,13 @@ unsigned long previousMillis = 0;
 int ledIndex = 0;
 bool turningOn = true;  // флаг для проверки, включаем ли мы LED или выключаем
 
-const int TOTAL_ANALOG_PINS = 16;
+const int TOTAL_ANALOG_PINS = 6;
 
 int analogPins[TOTAL_ANALOG_PINS];
 
 volatile uint16_t adcBuff[TOTAL_ANALOG_PINS];
 
-int16_t adc0, adc1, adc2, adc3, adc4, adc5, adc6, adc7,
-        adc8, adc9, adc10, adc11, adc12, adc13, adc14, adc15;
+int16_t adc0, adc1, adc2, adc3, adc4, adc5;
 
 void initializeADCs() {
     adc0 = (adcBuff[0] > 0) ? adcBuff[0] : 0;
@@ -60,16 +59,6 @@ void initializeADCs() {
     adc3 = (adcBuff[3] > 0) ? adcBuff[3] : 0;
     adc4 = (adcBuff[4] > 0) ? adcBuff[4] : 0;
     adc5 = (adcBuff[5] > 0) ? adcBuff[5] : 0;
-    adc6 = (adcBuff[6] > 0) ? adcBuff[6] : 0;
-    adc7 = (adcBuff[7] > 0) ? adcBuff[7] : 0;
-    adc8 = (adcBuff[8] > 0) ? adcBuff[8] : 0;
-    adc9 = (adcBuff[9] > 0) ? adcBuff[9] : 0;
-    adc10 = (adcBuff[10] > 0) ? adcBuff[10] : 0;
-    adc11 = (adcBuff[11] > 0) ? adcBuff[11] : 0;
-    adc12 = (adcBuff[12] > 0) ? adcBuff[12] : 0;
-    adc13 = (adcBuff[13] > 0) ? adcBuff[13] : 0;
-    adc14 = (adcBuff[14] > 0) ? adcBuff[14] : 0;
-    adc15 = (adcBuff[15] > 0) ? adcBuff[15] : 0;
 
 }
 
@@ -128,13 +117,13 @@ ts.execute();
 canMsg1.can_dlc = 8;
     canMsg1.can_id = 0x690;
     canMsg1.data[0] = adc0 >> 8;
-    canMsg1.data[1] = adc1 & 0xFF;
-    canMsg1.data[2] = adc2 >> 8;
-    canMsg1.data[3] = adc3 & 0xFF;
-    canMsg1.data[4] = adc4 >> 8;
-    canMsg1.data[5] = adc5 & 0xFF;
-    canMsg1.data[6] = adc6 >> 8;
-    canMsg1.data[7] = adc7 & 0xFF;
+    canMsg1.data[1] = adc0 & 0xFF;
+    canMsg1.data[2] = adc1 >> 8;
+    canMsg1.data[3] = adc1 & 0xFF;
+    canMsg1.data[4] = adc2 >> 8;
+    canMsg1.data[5] = adc2 & 0xFF;
+    canMsg1.data[6] = adc3 >> 8;
+    canMsg1.data[7] = adc3 & 0xFF;
     
     addToCanBuffer(canMsg1);
 
@@ -142,14 +131,14 @@ canMsg1.can_dlc = 8;
 
     canMsg2.can_dlc = 8;
     canMsg2.can_id = 0x691;
-    canMsg2.data[0] = adc0 >> 8;
-    canMsg2.data[1] = adc1 & 0xFF;
-    canMsg2.data[2] = adc2 >> 8;
-    canMsg2.data[3] = adc3 & 0xFF;
-    canMsg2.data[4] = adc4 >> 8;
-    canMsg2.data[5] = adc5 & 0xFF;
-    canMsg2.data[6] = adc6 >> 8;
-    canMsg2.data[7] = adc7 & 0xFF;
+    canMsg2.data[0] = adc4 >> 8;
+    canMsg2.data[1] = adc4 & 0xFF;
+    canMsg2.data[2] = adc5 >> 8;
+    canMsg2.data[3] = adc5 & 0xFF;
+    canMsg2.data[4] = 0x00;
+    canMsg2.data[5] = 0x00;
+    canMsg2.data[6] = 0x00;
+    canMsg2.data[7] = 0x00;
 
     addToCanBuffer(canMsg2);   
 
