@@ -74,6 +74,46 @@ void updateadcBuffAndSave() {
 
 Scheduler ts;
 
+struct canMsg {
+    long unsigned int can_id;  // CAN id
+    unsigned char can_dlc;     // Data length
+    unsigned char data[8];     // Data
+} canMsg1, canMsg2;
+byte data[8] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+
+struct CanBuffer {
+    struct canMsg messages[CAN_BUFFER_SIZE];
+    uint8_t head = 0;  // указатель на первое свободное место
+    uint8_t tail = 0;  // указатель на первое сообщение для отправки
+} canBuffer;
+
+bool addToCanBuffer(const struct canMsg& message) {
+    uint8_t nextHead = (canBuffer.head + 1) % CAN_BUFFER_SIZE;
+    if (nextHead == canBuffer.tail) {
+        // Буфер переполнен, сообщение не добавлено
+        return false;
+    }
+    canBuffer.messages[canBuffer.head] = message;
+    canBuffer.head = nextHead;
+    return true;
+}
+
+bool removeFromCanBuffer(struct canMsg& message) {
+    if (canBuffer.tail == canBuffer.head) {
+        // Буфер пуст, нет сообщений для извлечения
+        return false;
+    }
+    message = canBuffer.messages[canBuffer.tail];
+    canBuffer.tail = (canBuffer.tail + 1) % CAN_BUFFER_SIZE;
+    return true;
+}
+
+void sendBufferedCanMessages() {
+    struct canMsg messages;
+    while (removeFromCanBuffer(messages)) {
+        CAN.sendMsgBuf(messages.can_id, 0, messages.can_dlc, messages.data);  // Изменили на новую функцию
+    }
+}
 void setup() {
 
 CLKPR = 0x80;
