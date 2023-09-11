@@ -1,6 +1,5 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
-#include <mcp_can.h>
 #include "Arduino.h"
 #include "BitmapHelpers.h"
 
