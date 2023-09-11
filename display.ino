@@ -165,10 +165,6 @@ void initialise_display()
 {
 #if DISP1_ACTIVE == 1
 
- // Initialize MCP2515 running at 16MHz with a baudrate of 500kb/s and the masks and filters disabled.
-  if(CAN.begin(MCP_ANY, CAN_500KBPS, MCP_16MHZ) == CAN_OK);
-  CAN.setMode(MCP_NORMAL);   // Change to normal mode to allow messages to be transmitted
-
   tft.initR(INITR_MINI160x80_PLUGIN);
   //tft.invertDisplay(true);
   tft.invertDisplay(false);
