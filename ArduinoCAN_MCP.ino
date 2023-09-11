@@ -5,6 +5,9 @@
 #include "PinConfig.h"
 #include "display.h"
 
+#define CAN_BUFFER_SIZE 4
+MCP_CAN CAN(53);  // Создаем объект CAN и задаем CS пин как 53
+
 const unsigned long EXECUTION_INTERVAL = 20; // 50 Гц (1 секунда / 50 = 20 миллисекунд)
 const unsigned long MAX_EXECUTION_TIME = 100; // Максимальное время выполнения 100 миллисекунд
 
