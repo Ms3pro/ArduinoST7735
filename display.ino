@@ -79,38 +79,17 @@ void readEGTValues() {
    egt5 = map(rawEgt5, 0, 1023, 0, 1000);
    egt6 = map(rawEgt6, 0, 1023, 0, 1000);
 
+  digitalWrite(EGT1_LED, egt1 > 800 ? HIGH : LOW);
+  digitalWrite(EGT2_LED, egt2 > 800 ? HIGH : LOW);
+  digitalWrite(EGT3_LED, egt3 > 800 ? HIGH : LOW);
+  digitalWrite(EGT4_LED, egt4 > 800 ? HIGH : LOW);
+  digitalWrite(EGT5_LED, egt5 > 800 ? HIGH : LOW);
+  digitalWrite(EGT6_LED, egt6 > 800 ? HIGH : LOW);
+
 }
  
 void DrawBarChartV(Adafruit_ST7735 & d, double x , double y , double w, double h , double loval , double hival , double inc , double curval ,  int dig , int dec, unsigned int barcolor, unsigned int voidcolor, unsigned int bordercolor, unsigned int textcolor, unsigned int backcolor, String label, boolean & redraw)
 {
-canMsg1.can_dlc = 8;
-    canMsg1.can_id = 0x690;
-    canMsg1.data[0] = adc0 >> 8;
-    canMsg1.data[1] = adc1 & 0xFF;
-    canMsg1.data[2] = adc2 >> 8;
-    canMsg1.data[3] = adc3 & 0xFF;
-    canMsg1.data[4] = adc4 >> 8;
-    canMsg1.data[5] = adc5 & 0xFF;
-    canMsg1.data[6] = adc6 >> 8;
-    canMsg1.data[7] = adc7 & 0xFF;
-    
-    addToCanBuffer(canMsg1);
-
-// Заполняем данные для CAN сообщения 2
-
-    canMsg2.can_dlc = 8;
-    canMsg2.can_id = 0x691;
-    canMsg2.data[0] = adc0 >> 8;
-    canMsg2.data[1] = adc1 & 0xFF;
-    canMsg2.data[2] = adc2 >> 8;
-    canMsg2.data[3] = adc3 & 0xFF;
-    canMsg2.data[4] = adc4 >> 8;
-    canMsg2.data[5] = adc5 & 0xFF;
-    canMsg2.data[6] = adc6 >> 8;
-    canMsg2.data[7] = adc7 & 0xFF;
-
-    addToCanBuffer(canMsg2);   
-    sendBufferedCanMessages();
 
   double stepval, range;
   double my, level;
