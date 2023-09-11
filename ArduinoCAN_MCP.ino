@@ -201,13 +201,8 @@ void ReadAnalogStatuses() {
     updateadcBuffAndSave();   
 
 initializeADCs(); // Здесь вызываем функцию инициализации переменных adcX  
-  digitalWrite(EGT1_LED, egt1 > 800 ? HIGH : LOW);
-  digitalWrite(EGT2_LED, egt2 > 800 ? HIGH : LOW);
-  digitalWrite(EGT3_LED, egt3 > 800 ? HIGH : LOW);
-  digitalWrite(EGT4_LED, egt4 > 800 ? HIGH : LOW);
-  digitalWrite(EGT5_LED, egt5 > 800 ? HIGH : LOW);
-  digitalWrite(EGT6_LED, egt6 > 800 ? HIGH : LOW);
+  
 }
 
 //Task t1(500, TASK_FOREVER, &driveDisplayTask, &ts, true);
-Task t1(500, TASK_FOREVER, &ReadAnalogStatuses, &ts, true);
+Task t1(100, TASK_FOREVER, &ReadAnalogStatuses, &ts, true);
