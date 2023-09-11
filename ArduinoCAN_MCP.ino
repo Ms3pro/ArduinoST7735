@@ -1,4 +1,5 @@
 #include <SPI.h>
+#include <mcp_can.h>
 #include <avr/io.h>
 #include <EEPROM.h>
 #include <TaskScheduler.h>
